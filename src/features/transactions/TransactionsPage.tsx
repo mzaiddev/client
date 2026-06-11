@@ -14,7 +14,7 @@ import { TableSkeleton } from "../../components/ui/skeleton";
 import { Table, TableWrap, Td, Th } from "../../components/ui/table";
 import { useAuth } from "../auth/AuthProvider";
 import { useDebounce } from "../../hooks/useDebounce";
-import { formatCurrency, formatDate } from "../../lib/utils";
+import { formatCurrency, formatDate, formatTransactionUser, getTransactionUserId } from "../../lib/utils";
 import { api, downloadBlob } from "../../services/api";
 import { Paginated, Transaction, User } from "../../types";
 
@@ -108,7 +108,7 @@ export function TransactionsPage() {
   function openEdit(tx: Transaction) {
     setEditing(tx);
     form.reset({
-      userId: typeof tx.userId === "object" ? tx.userId.id || tx.userId._id || "" : tx.userId,
+      userId: getTransactionUserId(tx.userId),
       amount: tx.amount,
       type: tx.type,
       description: tx.description,
@@ -162,7 +162,7 @@ export function TransactionsPage() {
               {txQuery.data.transactions.map((tx) => (
                 <tr key={tx._id}>
                   <Td className="font-mono text-xs">{tx._id.slice(-8)}</Td>
-                  <Td>{typeof tx.userId === "object" ? tx.userId.name : "-"}</Td>
+                  <Td>{formatTransactionUser(tx.userId)}</Td>
                   <Td className="font-semibold">{formatCurrency(tx.amount)}</Td>
                   <Td><Badge className={tx.type === "IN" ? "bg-success/10 text-success" : "bg-danger/10 text-danger"}>{tx.type}</Badge></Td>
                   <Td>{tx.description}</Td>

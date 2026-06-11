@@ -26,7 +26,7 @@ export type User = {
 
 export type Transaction = {
   _id: string;
-  userId: User | string;
+  userId: User | string | null;
   amount: number;
   type: TransactionType;
   description: string;
