@@ -10,7 +10,7 @@ import { Field, Input, Select, Textarea } from "../../components/ui/input";
 import { Skeleton } from "../../components/ui/skeleton";
 import { Table, TableWrap, Td, Th } from "../../components/ui/table";
 import { useAuth } from "../auth/AuthProvider";
-import { formatCurrency, formatDate } from "../../lib/utils";
+import { formatCurrency, formatDate, formatTransactionUser } from "../../lib/utils";
 import { api } from "../../services/api";
 import { DashboardData } from "../../types";
 
@@ -98,7 +98,7 @@ export function DashboardPage() {
                     {data.recentTransactions.map((tx) => (
                       <tr key={tx._id}>
                         <Td>{tx.description}</Td>
-                        <Td>{typeof tx.userId === "object" ? tx.userId.name : "-"}</Td>
+                        <Td>{formatTransactionUser(tx.userId)}</Td>
                         <Td><Badge className={tx.type === "IN" ? "bg-success/10 text-success" : "bg-danger/10 text-danger"}>{tx.type}</Badge></Td>
                         <Td>{formatCurrency(tx.amount)}</Td>
                         <Td>{formatDate(tx.date)}</Td>
